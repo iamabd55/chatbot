@@ -54,10 +54,12 @@ themeBtn.addEventListener('click', () => {
     msgInput.style.caretColor = darkMode ? '#ffffff' : 'black';
 
     themeBtn.src = themeBtn.src.includes("images/night.svg") ? "images/day.svg" : "images/night.svg";
-    const clip = document.querySelector('.clip');
-    if (clip) {
-        clip.src = clip.src.includes("images/clipboard.svg") ? "images/clipboard_white.svg" : "images/clipboard.svg";
-    }
+    document.querySelectorAll('.clip').forEach(clip => {
+    clip.src = clip.src.includes("images/clipboard.svg") 
+        ? "images/clipboard_white.svg" 
+        : "images/clipboard.svg";
+});
+
 });
 
 // === Utility Functions ===
