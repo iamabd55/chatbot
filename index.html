@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="output.css">
+    <title>ChatBot</title>
+</head>
+
+<body>
+    <div class="chatbot-popup h-[93vh] w-[100vw] bg-white overflow-hidden flex flex-col md:h-[100vh] font-['Inter']">
+        <!-- Header -->
+        <div class="chatbot-header flex items-center justify-between bg-[#0022ff] p-4 relative">
+            <div class="headerinfo flex items-center gap-2 text-lg md:gap-4">
+                <img class="logo bg-white rounded-full p-1.5" height="50" width="50" src="images/logo.svg" alt="">
+                <h2 class="heading text-white font-bold">ChatBot</h2>
+            </div>
+
+            <div class="model flex items-center gap-2.5 relative">
+                <img src="images/night.svg" width="25" height="25" alt="" class="theme cursor-pointer">
+                <span class="model-name text-[#F2F2F2] text-[14px] w-[7rem] text-center">Gemini-2.5-flash-lite</span>
+                <button id="toggle-models"
+                    class="material-symbols-outlined text-white rounded-full text-3xl h-10 w-10 cursor-pointer hover:bg-[#3148dd] flex items-center justify-center">
+                    keyboard_arrow_down
+                </button>
+
+                <!-- Dropdown (hidden by default) -->
+                <ul id="model-list" class="absolute right-0 mt-12 w-48 bg-white rounded-lg shadow-lg hidden">
+                    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Gemini 2.5 Flash</li>
+                    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Gemini 2.5 Flash-lite</li>
+                    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Gemini 2.5 Pro</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- Body (Scrollable) -->
+        <div class="chat-body flex-1 overflow-y-auto p-6 gap-5 flex flex-col">
+            <div class="message bot-msg flex-col md:flex-row md:items-center gap-3">
+                <img class="avatar bg-[#0022ff] rounded-full p-1.5" src="images/logo_white.svg" height="30" width="30" alt="">
+                <div class="wrapper flex items-end gap-2">
+                    <div class="msgText flex flex-col p-4 max-w-[100%] bg-[#F2F2F2] text-sm rounded-lg">
+                        <span>Hey there 👋</span>
+                        <span>Start the Conversation</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Add more messages here to test scrolling -->
+
+        <!-- Footer -->
+        <div class="chat-footer p-3">
+            <form action="" class="chat-form flex items-center bg-white rounded-full border border-gray-200">
+                <textarea placeholder="Message..."
+                    class="msg-input border-none text-black outline-none h-[47px] w-full pl-4 py-3 resize-none overflow-hidden"
+                    required></textarea>
+                <button type="submit" id="send-msg"
+                    class="btn bg-[#002dff] rounded-full mr-3 p-2 cursor-pointer flex items-center justify-center">
+                    <img src="images/arrowup.svg" alt="">
+                </button>
+            </form>
+            <div class="chat-controls mt-4 pl-1 flex gap-2">
+                <div class="file-upload-wrapper">
+                    <input type="file" accept="images/*" name="" id="file-input" hidden>
+                    <button type="button" id="file-upload"
+                        class="btn bg-white rounded-full p-1 cursor-pointer flex items-center gap-2 text-black">
+                        <img src="images/attachfile.svg" alt="">
+                        <span>Attach File</span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="script.js"></script>
+
+</html>
