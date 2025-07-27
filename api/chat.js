@@ -3,14 +3,15 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { prompt, history, file } = req.body;
+    const { prompt, history, file, model } = req.body;
+    const selectedModel = model || 'gemini-2.5-flash-lite'; // default if user didn't pick one
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-goog-api-key': process.env.API_KEY  // your Vercel environment variable
+                'x-goog-api-key': process.env.API_KEY
             },
             body: JSON.stringify({
                 contents: [
