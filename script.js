@@ -41,11 +41,9 @@ modelList.querySelectorAll('li').forEach(item => {
 // === Theme Change ===
 themeBtn.addEventListener('click', () => {
     darkMode = !darkMode;
-
     document.querySelectorAll('.chat-body, .chat-footer').forEach(el => {
         el.classList.toggle('dark', darkMode);
     });
-
     document.querySelectorAll('.msgText').forEach(el => {
         el.classList.toggle('lightDark', darkMode);
     });
@@ -63,8 +61,7 @@ themeBtn.addEventListener('click', () => {
 });
 
 // === Utility Functions ===
-const escapeHTML = str =>
-    str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const escapeHTML = str => str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 function addSalawat(text) {
     return text.replace(/\b(?:Hazrat\s+|Prophet\s+)?Muhammad\b/gi, match => `${match} ﷺ`);
@@ -119,7 +116,6 @@ function sendUserMessage(userMsg) {
         <div class="message user-msg">${safeMsg}</div>
         ${userData.file.data ? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="attachment" />` : ""}
     `));
-
     msgInput.value = "";
     chatBody.scrollTop = chatBody.scrollHeight;
 
@@ -151,7 +147,8 @@ async function generateBotResponse(prompt, botMsgElement) {
             body: JSON.stringify({
                 prompt: prompt,
                 history: conversationHistory,
-                file: userData.file.data ? userData.file : null
+                file: userData.file.data ? userData.file : null,
+                model: defaultModel // always send current model
             })
         });
 
@@ -234,10 +231,7 @@ fileInput.addEventListener('change', () => {
     const reader = new FileReader();
     reader.onload = (e) => {
         const base64String = e.target.result.split(",")[1];
-        userData.file = {
-            data: base64String,
-            mime_type: file.type
-        };
+        userData.file = { data: base64String, mime_type: file.type };
         fileInput.value = "";
     };
     reader.readAsDataURL(file);
