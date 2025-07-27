@@ -149,7 +149,7 @@ async function generateBotResponse(prompt, botMsgElement) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-        prompt: userMessage,
+        prompt,
         history: conversationHistory,
         file: userData.file,
         model: defaultModel  // pass the currently selected model
