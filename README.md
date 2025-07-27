@@ -21,4 +21,4 @@ This project interacts with Google’s **Gemini API** to deliver real-time AI-ge
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/ai-chatbot.git
+   git clone https://github.com/iamabd55/chatbot.git
