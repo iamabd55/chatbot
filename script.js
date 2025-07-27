@@ -7,10 +7,9 @@ const modelList = document.querySelector("#model-list");
 const modelName = document.querySelector('.model-name');
 const themeBtn = document.querySelector('.theme');
 const fileInput = document.querySelector('#file-input');
-const API_KEY = "AIzaSyCpowQ4olMcbk0YhCcuHIKW8BNBRyGzXA8";
 
 // === State ===
-let defaultModel = 'gemini-2.5-flash-lite-preview-06-17';
+let defaultModel = 'gemini-2.5-flash-lite';
 let conversationHistory = [];
 let darkMode = false;
 
@@ -43,30 +42,24 @@ modelList.querySelectorAll('li').forEach(item => {
 themeBtn.addEventListener('click', () => {
     darkMode = !darkMode;
 
-    // Toggle classes on chat body & footer
     document.querySelectorAll('.chat-body, .chat-footer').forEach(el => {
         el.classList.toggle('dark', darkMode);
     });
 
-    // Toggle message bubbles
     document.querySelectorAll('.msgText').forEach(el => {
         el.classList.toggle('lightDark', darkMode);
     });
 
-    // Update chat-form and input
     const chatForm = document.querySelector(".chat-form");
     chatForm.style.backgroundColor = darkMode ? '#474747' : '#ffffff';
-    // chatForm.style.color = darkMode ? '#ffffff' : 'black';
-
     msgInput.style.color = darkMode ? '#ffffff' : 'black';
     msgInput.style.caretColor = darkMode ? '#ffffff' : 'black';
-    msgInput.style.setProperty('--placeholder-color', darkMode ? '#cccccc' : '#666666');
 
-    //icons change
     themeBtn.src = themeBtn.src.includes("images/night.svg") ? "images/day.svg" : "images/night.svg";
-
-    const clip=document.querySelector('.clip');
-    clip.src = clip.src.includes("images/clipboard.svg") ? "images/clipboard_white.svg" : "images/clipboard.svg";
+    const clip = document.querySelector('.clip');
+    if (clip) {
+        clip.src = clip.src.includes("images/clipboard.svg") ? "images/clipboard_white.svg" : "images/clipboard.svg";
+    }
 });
 
 // === Utility Functions ===
@@ -150,24 +143,17 @@ function sendUserMessage(userMsg) {
 // === Generate Bot Response ===
 async function generateBotResponse(prompt, botMsgElement) {
     try {
-        let parts = [{ text: prompt }];
-        if (userData.file.data) {
-            parts.push({ inline_data: userData.file });
-        }
-        conversationHistory.push({ role: "user", parts: parts });
-        userData.file = { data: null, mime_type: null };
+        conversationHistory.push({ role: "user", parts: [{ text: prompt }] });
 
-        const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${defaultModel}:generateContent`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-goog-api-key": API_KEY
-                },
-                body: JSON.stringify({ contents: conversationHistory })
-            }
-        );
+        const response = await fetch('/api/chat', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                prompt: prompt,
+                history: conversationHistory,
+                file: userData.file.data ? userData.file : null
+            })
+        });
 
         const data = await response.json();
         let botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No reply available.";
@@ -181,9 +167,7 @@ async function generateBotResponse(prompt, botMsgElement) {
 
         const msgText = document.createElement('div');
         msgText.className = 'msgText flex flex-col p-4 max-w-[75%] bg-[#F2F2F2] text-sm rounded-lg';
-        if (darkMode) {
-            msgText.classList.add('lightDark');
-        }
+        if (darkMode) msgText.classList.add('lightDark');
 
         const copyBtn = document.createElement('button');
         copyBtn.className = 'copy relative p-1 hover:opacity-70 w-6 h-6 flex items-center justify-center';
